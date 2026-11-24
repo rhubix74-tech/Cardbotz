@@ -131,6 +131,14 @@
   .frm .err{color:#a32a1a;min-height:22px;font-size:16px}
   #dashTag{left:50%;bottom:92px;transform:translateX(-50%);font-size:22px;color:#ffd22e;white-space:nowrap}
   #hillTag{left:50%;top:62px;transform:translateX(-50%);font-size:24px;color:#ffd22e;white-space:nowrap}
+  .btnrow{flex-wrap:wrap}
+  .it.bx h3{display:flex;align-items:center;gap:7px}.sw{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);flex:none}
+  .bxb{display:flex;gap:6px;margin-top:auto;flex-wrap:wrap}button.xs.off{background:#7b5430}
+  .bxe{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;text-align:left;font-size:15px;margin:8px 0}
+  .bxe label{display:flex;flex-direction:column;gap:2px}.bxe label b{color:var(--red);font-weight:normal}.bxe small{font-size:11px;opacity:.7;font-family:system-ui,sans-serif}.bxe .full{grid-column:1/-1}
+  .bxe input[type=text]{font-family:inherit;font-size:18px;width:100%;background:#f1e3c3;border:2px solid var(--ink);border-radius:4px;padding:3px 8px;color:var(--ink)}
+  .bxe input[type=color]{width:100%;height:34px;padding:0;border:2px solid var(--ink);background:#f1e3c3;border-radius:4px}.bxe select{width:100%}
+  @media(max-width:600px){.bxe{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -161,12 +169,12 @@
     <div class="acct" id="acctBar"></div>
     <div class="opts">
       <label>Bot skill<select id="optDiff"><option value="easy">Flimsy</option><option value="med" selected>Corrugated</option><option value="hard">Double-wall</option></select></label>
-      <label>Bots<select id="optBots"><option>3</option><option selected>5</option><option>7</option></select></label>
+      <label>Bots<select id="optBots"><option>0</option><option>3</option><option selected>5</option><option>7</option></select></label>
       <label>Map<select id="optMap"><option value="box">Boxarena</option><option value="boxL">Boxarena L</option><option value="living">Living Room</option><option value="livingL">Living Room L</option><option value="attic">Dusty Attic</option><option value="atticL">Dusty Attic L</option><option value="yarn">Yarn Cushion</option><option value="yarnL">Yarn Cushion L</option><option value="bath">Bathroom</option><option value="bathL">Bathroom L</option><option value="garage">Garage</option><option value="garageL">Garage L</option><option value="desk">Desk Fortress</option><option value="deskL">Desk Fortress L</option><option value="yard">Backyard</option><option value="yardL">Backyard L</option></select></label>
       <label>Mode<select id="optMode"><option value="ffa">Free For All</option><option value="koth">King of the Hill</option></select></label>
       <label>Mouse<input id="optSens" type="range" min="1" max="10" value="5"></label>
     </div>
-    <div class="wallet">Wallet: <b id="mMoney">$0</b></div><button id="btnGo">DEPLOY</button><div class="btnrow"><button class="sm" data-go="load">LOADOUT</button><button class="sm alt" data-go="shop">SHOP</button><button class="sm" data-go="lb">LEADERBOARD</button><button class="sm" data-go="mp">MULTIPLAYER</button></div>
+    <div class="wallet">Wallet: <b id="mMoney">$0</b></div><button id="btnGo">DEPLOY</button><div class="btnrow"><button class="sm" data-go="load">LOADOUT</button><button class="sm alt" data-go="shop">SHOP</button><button class="sm" data-go="bx">BOXITARS</button><button class="sm" data-go="lb">LEADERBOARD</button><button class="sm" data-go="mp">MULTIPLAYER</button></div>
     <div class="keys">
       <div><b>WASD</b> stomp &nbsp; <b>SHIFT</b> sprint</div><div><b>SPACE</b> jump (hop on crates!)</div>
       <div><b>MOUSE</b> aim &nbsp; <b>CLICK</b> fire</div><div><b>1-4 / WHEEL</b> pick weapon</div>
@@ -777,6 +785,42 @@ const STICKERS=[
   {id:'skull',emo:'\u{1F480}',name:'Skull',price:3000,fx:{dmgOut:1.12},pros:['+12% damage dealt'],cons:[]},
   {id:'star',emo:'\u2B50',name:'Gold Star',price:2000,fx:{cash:1.15},pros:['+15% cash per flattening'],cons:[]},
   {id:'frog',emo:'\u{1F438}',name:'Frog',price:1800,fx:{jump:1.25},pros:['+25% jump height'],cons:[]}];
+const ARMOR_X=[
+ {id:'pizza',name:'Pizza Box Shield',price:2000,fx:{dmgMul:.88,hp:15,speed:.97}},
+ {id:'pogo',name:'Pogo Spring Boots',price:2400,fx:{jump:1.5,speed:1.04,blastMul:1.2}},
+ {id:'noodle',name:'Pool Noodle Padding',price:2600,fx:{blastMul:.5,jump:1.1,dmgOut:.9}},
+ {id:'wheels',name:'Skateboard Wheels',price:3400,fx:{speed:1.2,dmgMul:1.1,jump:.9}},
+ {id:'cereal',name:'Cereal Box Cowl',price:3800,fx:{ammoMul:1.35,cash:1.2,hp:-10}},
+ {id:'cap',name:'Bottlecap Plating',price:4200,fx:{hp:35,dmgMul:.9,speed:.92,jump:.9}},
+ {id:'warpaint',name:'Sharpie Warpaint',price:4500,fx:{dmgOut:1.35,dmgMul:1.2,speed:1.06}},
+ {id:'mummy',name:'Duct Tape Mummy Wrap',price:5200,fx:{dmgMul:.8,hp:20,speed:.9}},
+ {id:'can',name:'Aluminum Can Carapace',price:6000,fx:{hp:50,dmgMul:.85,speed:.9,blastMul:.9}},
+ {id:'mailer',name:'Bubble Mailer Bulwark',price:7500,fx:{hp:40,dmgMul:.78,blastMul:.7,speed:.85,dmgOut:.9}}];
+const STICK_X=[
+ {id:'cat',emo:'\u{1F431}',name:'Lucky Cat',price:2100,fx:{jump:1.1,speed:1.08}},
+ {id:'fire',emo:'\u{1F525}',name:'Flame Decal',price:3200,fx:{dmgOut:1.18,hp:-10}},
+ {id:'shield',emo:'\u{1F6E1}\uFE0F',name:'Shield Crest',price:3400,fx:{dmgMul:.9}},
+ {id:'rocket',emo:'\u{1F680}',name:'Rocket Patch',price:2800,fx:{blastMul:.6}},
+ {id:'coin',emo:'\u{1F4B0}',name:'Money Bag',price:2600,fx:{cash:1.25}},
+ {id:'moon',emo:'\u{1F319}',name:'Night Owl Moon',price:2400,fx:{speed:1.1,jump:1.1}},
+ {id:'ghost',emo:'\u{1F47B}',name:'Ghost',price:3000,fx:{dmgMul:.94,speed:1.05}},
+ {id:'gem',emo:'\u{1F48E}',name:'Diamond',price:4000,fx:{hp:40,dmgOut:.95}},
+ {id:'pizzas',emo:'\u{1F355}',name:'Pizza Slice',price:2300,fx:{hp:15,ammoMul:1.2}},
+ {id:'clover',emo:'\u{1F340}',name:'Four-Leaf Clover',price:3600,fx:{cash:1.1,dmgOut:1.06,ammoMul:1.1}}];
+function fxText(fx){const p=[],c=[],pc=v=>Math.round(Math.abs(v-1)*100),add=(ok,t)=>(ok?p:c).push(t);
+ for(const k in fx){const v=fx[k];
+  if(k==='hp')add(v>0,(v>0?'+':'')+v+' integrity');
+  else if(k==='speed')add(v>1,v>1?'+'+pc(v)+'% speed':pc(v)+'% slower');
+  else if(k==='jump')add(v>1,v>1?'+'+pc(v)+'% jump':pc(v)+'% lower jump');
+  else if(k==='dmgMul')add(v<1,pc(v)+'% '+(v<1?'less':'more')+' damage taken');
+  else if(k==='blastMul')add(v<1,pc(v)+'% '+(v<1?'less':'more')+' explosion damage');
+  else if(k==='dmgOut')add(v>1,v>1?'+'+pc(v)+'% damage dealt':pc(v)+'% less damage dealt');
+  else if(k==='cash')add(v>1,v>1?'+'+pc(v)+'% cash per flattening':pc(v)+'% less cash');
+  else if(k==='ammoMul')add(v>1,v>1?'+'+pc(v)+'% ammo capacity':pc(v)+'% less ammo');}
+ return {pros:p,cons:c};}
+ARMOR_X.forEach(a=>{Object.assign(a,fxText(a.fx));ARMORS.push(a);});
+STICK_X.forEach(a=>{Object.assign(a,fxText(a.fx));STICKERS.push(a);});
+const NEWIDS=new Set(ARMOR_X.concat(STICK_X).map(a=>a.id));
 const DEF_STATS={hp:0,speed:1,jump:1,dmgMul:1,blastMul:1,dmgOut:1,cash:1,ammoMul:1,dash:0};
 const computeStats=(id,stk)=>{
   const st=Object.assign({},DEF_STATS,(ARMORS.find(a=>a.id===id)||ARMORS[0]).fx);
@@ -784,7 +828,7 @@ const computeStats=(id,stk)=>{
     for(const k in x.fx){if(k==='hp')st.hp+=x.fx.hp;else if(k==='dash')st.dash=1;else st[k]*=x.fx[k];}}
   return st;};
 const SAVE_KEY='cardbotz_save_v1';
-const defaultSave=()=>({money:250,ownedW:[0,1,2,3],ownedA:['none'],loadout:[0,1,2,3],armor:'none',ownedS:[],stickers:[],stats:{m:0,w:0,k:0,e:0}});
+const defaultSave=()=>({money:250,ownedW:[0,1,2,3],ownedA:['none'],loadout:[0,1,2,3],armor:'none',ownedS:[],stickers:[],boxitars:[],stats:{m:0,w:0,k:0,e:0}});
 function normSave(r){const d=defaultSave();try{if(r){
   if(typeof r.money==='number'&&r.money>=0)d.money=r.money;
   if(Array.isArray(r.ownedW))d.ownedW=[...new Set([0,1,2,3].concat(r.ownedW.filter(i=>WEAPONS[i])))];
@@ -793,10 +837,23 @@ function normSave(r){const d=defaultSave();try{if(r){
   if(d.ownedA.includes(r.armor))d.armor=r.armor;
   if(Array.isArray(r.ownedS))d.ownedS=[...new Set(r.ownedS.filter(i=>STICKERS.some(x=>x.id===i)))];
   if(Array.isArray(r.stickers))d.stickers=[...new Set(r.stickers.filter(i=>d.ownedS.includes(i)))].slice(0,2);
-  if(r.stats&&typeof r.stats==='object')['m','w','k','e'].forEach(k=>{if(Number.isFinite(r.stats[k])&&r.stats[k]>=0)d.stats[k]=Math.floor(r.stats[k]);});}}catch(e){}return d;}
+  d.boxitars=cleanBx(r.boxitars,d);
+  if(r.stats&&typeof r.stats==='object')['m','w','k','e'].forEach(k=>{if(Number.isFinite(r.stats[k])&&r.stats[k]>=0)d.stats[k]=Math.floor(r.stats[k]);});}}catch(e){}return extMerge(d);}
+const BX_NAME=s=>String(s||'').replace(/[^\w \-.!']/g,'').trim().slice(0,14);
+function cleanBx(l,d){if(!Array.isArray(l))return[];const ids=new Set(),n=v=>clamp(Math.round(+v)||5,1,10);
+ return l.slice(0,8).map(x=>{if(!x||typeof x!=='object')return null;let id=String(x.id||'').replace(/\W/g,'').slice(0,14)||('b'+Math.random().toString(36).slice(2,8));if(ids.has(id))id+=ids.size;ids.add(id);
+  return {id,name:BX_NAME(x.name)||'Boxitar',col:/^#[0-9a-f]{6}$/i.test(x.col)?x.col:'#8a3fb5',aim:n(x.aim),react:n(x.react),speed:n(x.speed),aggr:n(x.aggr),dodge:n(x.dodge),
+   wep:(x.wep==='auto'||!WEAPONS[x.wep])?'auto':+x.wep,armor:d.ownedA.includes(x.armor)?x.armor:'none',stk:(Array.isArray(x.stk)?x.stk:[]).filter((s,i,a)=>d.ownedS.includes(s)&&a.indexOf(s)===i).slice(0,2),on:x.on?1:0};}).filter(Boolean);}
+const EXT_KEY='cardbotz_ext_v1';
+function whoAmI(){try{return ACCT.name||'';}catch(e){return '';}}
+function extSave(){try{const m=JSON.parse(localStorage.getItem(EXT_KEY)||'{}');m[whoAmI()||'~guest']={bx:SAVE.boxitars,a:SAVE.ownedA.filter(i=>NEWIDS.has(i)),s:SAVE.ownedS.filter(i=>NEWIDS.has(i))};localStorage.setItem(EXT_KEY,JSON.stringify(m));}catch(e){}}
+function extMerge(d){const w=whoAmI();if(!w)return d;try{const x=JSON.parse(localStorage.getItem(EXT_KEY)||'{}')[w];if(x){
+ (x.a||[]).forEach(i=>{if(ARMORS.some(a=>a.id===i)&&!d.ownedA.includes(i))d.ownedA.push(i);});
+ (x.s||[]).forEach(i=>{if(STICKERS.some(a=>a.id===i)&&!d.ownedS.includes(i))d.ownedS.push(i);});
+ if(!d.boxitars.length&&Array.isArray(x.bx))d.boxitars=cleanBx(x.bx,d);}}catch(e){}return d;}
 function loadGuest(){try{return normSave(JSON.parse(localStorage.getItem(SAVE_KEY)||'null'));}catch(e){return defaultSave();}}
 const SAVE=loadGuest();
-function persist(){if(ACCT.name){queueSync();return;}try{localStorage.setItem(SAVE_KEY,JSON.stringify(SAVE));}catch(e){}}
+function persist(){extSave();if(ACCT.name){queueSync();return;}try{localStorage.setItem(SAVE_KEY,JSON.stringify(SAVE));}catch(e){}}
 const money=n=>'$'+Math.round(n).toLocaleString('en-US');
 function buildWeaponModel(i){
   const g=new THREE.Group();
@@ -900,11 +957,20 @@ function makeEntity(name,isPlayer,col){
 }
 const player=makeEntity('YOU',true,0xffd22e);ents.push(player);
 let bots=[];
-function createBots(n){
+function createBots(n,noBx){
   bots.forEach(b=>{scene.remove(b.mesh);const i=ents.indexOf(b);if(i>=0)ents.splice(i,1);});
   bots=[];
   for(let i=0;i<n;i++){const b=makeEntity(BOT_NAMES[i],false,BOT_COLORS[i]);bots.push(b);ents.push(b);}
+  (noBx?[]:(SAVE.boxitars||[]).filter(c=>c.on).slice(0,4)).forEach(c=>{const taken=new Set(['YOU'].concat(bots.map(b=>b.name)));let nm=c.name;while(taken.has(nm))nm+='*';
+    const b=makeEntity(nm,false,parseInt(c.col.slice(1),16)),L=(a,z,v)=>a+(z-a)*(v-1)/9;
+    b.bx=c;b.stats=computeStats(c.armor,c.stk);b.stkDone=1;applyStickers(b,c.stk);
+    b.df={turn:L(2,8.5,c.aim),err:L(.12,.014,c.aim),react:L(.7,.14,c.react),rate:L(2,1,(c.aim+c.react)/2),speed:L(5.8,9.2,c.speed)};
+    bots.push(b);ents.push(b);});
+  S.botSig=noBx?null:botSig(n);
 }
+const botSig=n=>n+JSON.stringify((SAVE.boxitars||[]).filter(c=>c.on).slice(0,4));
+const prefD=b=>{const w=WEAPONS[b.wep],base=b.wep<4?PREF[b.wep]:(w.hitscan?24:w.splash?17:w.pellets>1?7:13);return b.bx?base*(1.4-.075*b.bx.aggr):base;};
+const bxWeapon=(c,d)=>c.wep==='auto'?botWeaponFor(d):c.wep;
 function spawnEntity(e,first){
   let best=null,bs=-1;
   const cands=SPAWNS.slice().sort(()=>Math.random()-.5);
@@ -913,7 +979,7 @@ function spawnEntity(e,first){
   let tr=0;while(blockedBy(best[0],best[1],0)&&tr++<40)best=[rr(),rr()];e.pos.set(best[0],0,best[1]);e.vx=e.vz=e.vy=e.kx=e.kz=0;
   e.yaw=Math.atan2(-(0-best[0]),-(0-best[1]));e.pitch=0;e.maxHp=100+e.stats.hp;e.hp=e.maxHp;e.alive=true;e.slowT=0;e.invuln=2;e.cd=.3;e.wep=e.isPlayer?SAVE.loadout[0]:0;e.flash=0;
   if(e.isPlayer){e.ammo=WEAPONS.map(w=>Math.round(w.start*e.stats.ammoMul));setViewWeapon(e.wep);}
-  else{e.mesh.visible=true;if(!e.stkDone&&!MP.on){e.stkDone=1;const n=Math.floor(Math.random()*3),p=STICKERS.map(x=>x.id).sort(()=>Math.random()-.5).slice(0,n);applyStickers(e,p);}setMechWeapon(e,0);e.ai.target=null;e.ai.vis=false;e.ai.seenT=99;e.ai.goal.set(rr(),0,rr());}
+  else{e.mesh.visible=true;if(!e.stkDone&&!MP.on){e.stkDone=1;const n=Math.floor(Math.random()*3),p=STICKERS.map(x=>x.id).sort(()=>Math.random()-.5).slice(0,n);applyStickers(e,p);}setMechWeapon(e,0);if(e.bx&&e.bx.wep!=='auto'){e.wep=e.bx.wep;setMechWeapon(e,e.wep);}e.ai.target=null;e.ai.vis=false;e.ai.seenT=99;e.ai.goal.set(rr(),0,rr());}
   sfx('spawn',e.pos);
 }
 
@@ -1085,7 +1151,7 @@ function tryFire(e){
   if(e.isPlayer){if(e.ammo[e.wep]<=0){e.cd=.25;sfx('click');
       const alt=SAVE.loadout.find(id=>e.ammo[id]>0);if(alt!==undefined)switchWeapon(e,alt);return false;}
     e.ammo[e.wep]--;e.cd=w.rate;}
-  else e.cd=w.rate*DIFF[S.diff].rate*(e.wep===0?1.25:1);
+  else e.cd=w.rate*(e.df||DIFF[S.diff]).rate*(e.wep===0?1.25:1);
   fireWeapon(e);if(MP.on){if(e.isPlayer)mpSend({t:'f',w:e.wep});else if(e.mpbot)mpSend({t:'f',w:e.wep,bot:e.rid});}return true;
 }
 function switchWeapon(e,i){
@@ -1192,7 +1258,7 @@ function botWeaponFor(d){
 }
 const PREF=[13,6,17,24];
 function updateBot(b,dt,wantMove){
-  const a=b.ai,df=DIFF[S.diff];
+  const a=b.ai,df=b.df||DIFF[S.diff],bx=b.bx;
   a.think-=dt;a.seenT+=dt;a.react-=dt;a.strafeT-=dt;a.errT-=dt;a.wepT-=dt;
   const ey=eyeY(b);
   if(a.think<=0){
@@ -1211,7 +1277,7 @@ function updateBot(b,dt,wantMove){
   if(b.hp<45){let bp=null,bd=1e9;for(const p of pickups){if(p.type!=='health'||!p.active)continue;const d=Math.hypot(p.x-b.pos.x,p.z-b.pos.z);if(d<bd){bd=d;bp=p;}}
     if(bp&&(!a.vis||b.hp<30)){mode='heal';gx=bp.x;gz=bp.z;}}
   if(mode==='wander'&&a.target&&a.vis){mode='fight';gx=a.target.pos.x;gz=a.target.pos.z;}
-  else if(mode==='wander'&&a.seenT<4&&a.target){mode='hunt';gx=a.lastSeen.x;gz=a.lastSeen.z;}
+  else if(mode==='wander'&&a.seenT<(bx?2+bx.aggr*.4:4)&&a.target){mode='hunt';gx=a.lastSeen.x;gz=a.lastSeen.z;}
   if(S.mode==='koth'&&S.state==='playing'&&mode!=='heal'){   // go take and hold the hill
     const td=a.target&&a.vis?Math.hypot(a.target.pos.x-b.pos.x,a.target.pos.z-b.pos.z):1e9;
     const onHill=Math.hypot(b.pos.x-HILL.x,b.pos.z-HILL.z)<HILL.r*.85;
@@ -1223,13 +1289,13 @@ function updateBot(b,dt,wantMove){
   if(mode==='wander'&&dist<3){a.goal.set(rr(),0,rr());}
   if(mode==='hunt'&&dist<3){a.seenT=99;}
   // weapon choice
-  if(mode==='fight'&&a.wepT<=0){a.wepT=1.2+Math.random();switchWeapon(b,botWeaponFor(dist));}
+  if(mode==='fight'&&a.wepT<=0){a.wepT=1.2+Math.random();switchWeapon(b,bx?bxWeapon(bx,dist):botWeaponFor(dist));}
   // movement vector
   let mx=0,mz=0;const nx=dx/dist,nz=dz/dist;
   if(mode==='fight'){
-    if(a.strafeT<=0){a.strafeT=rand(.8,2.4);a.strafe=Math.random()<.5?-1:1;}
-    const pref=PREF[b.wep],k=clamp((dist-pref)/6,-1,1);
-    mx=nx*k+(-nz)*a.strafe*.85;mz=nz*k+nx*a.strafe*.85;
+    if(a.strafeT<=0){a.strafeT=rand(.8,2.4)*(bx?1.7-.13*bx.dodge:1);a.strafe=Math.random()<.5?-1:1;}
+    const pref=prefD(b),k=clamp((dist-pref)/6,-1,1),sm=bx?.25+.075*bx.dodge:.85;
+    mx=nx*k+(-nz)*a.strafe*sm;mz=nz*k+nx*a.strafe*sm;
   }else{mx=nx;mz=nz;}
   if(S.mode==='koth'&&S.state==='playing'&&mode==='fight'){   // fight, but drift back toward the hill instead of strafing away from it
     const hx=HILL.x-b.pos.x,hz=HILL.z-b.pos.z,hd=Math.hypot(hx,hz)||1;
@@ -1252,7 +1318,7 @@ function updateBot(b,dt,wantMove){
   if(a.stuckT>.7){const mv=Math.hypot(b.pos.x-a.lastX,b.pos.z-a.lastZ);
     if(mv<.5&&ml>.1){a.goal.set(rr(),0,rr());a.strafe*=-1;jump=true;if(mode==='hunt')a.seenT=99;}
     a.lastX=b.pos.x;a.lastZ=b.pos.z;a.stuckT=0;}
-  const spd=df.speed*(mode==='fight'?.9:1)*(b.slowT>0?b.slowMul:1)*(WEAPONS[b.wep].moveMul||1);
+  const spd=df.speed*b.stats.speed*(mode==='fight'?.9:1)*(b.slowT>0?b.slowMul:1)*(WEAPONS[b.wep].moveMul||1);
   const tvx=wantMove?mx*spd:0,tvz=wantMove?mz*spd:0,ac2=Math.min(1,dt*9);
   b.vx+=(tvx-b.vx)*ac2;b.vz+=(tvz-b.vz)*ac2;
   moveEntity(b,dt,jump&&wantMove);
@@ -1260,13 +1326,13 @@ function updateBot(b,dt,wantMove){
   let ty,tp;
   if(mode==='fight'){
     const t=a.target;let ax=t.pos.x-b.pos.x,az=t.pos.z-b.pos.z,ayy=t.pos.y+1.9-ey;const hd=Math.hypot(ax,az)||1;
-    if(b.wep===2){const T=hd/WEAPONS[2].speed;ayy+=.5*WEAPONS[2].grav*T*T;}
-    else if(b.wep===1){const T=hd/WEAPONS[1].speed;ayy+=.5*WEAPONS[1].grav*T*T;}
+    {const w=WEAPONS[b.wep];if(w.grav&&w.speed){const T=hd/w.speed;ayy+=.5*w.grav*T*T;}}
+    
     ty=Math.atan2(-ax,-az)+a.errYaw;tp=Math.atan2(ayy,hd)+a.errPitch;
   }else{ty=Math.atan2(-mx,-mz);tp=0;if(Math.hypot(mx,mz)<.05)ty=b.yaw;}
   const maxT=df.turn*dt,dy=wrapAng(ty-b.yaw);b.yaw+=clamp(dy,-maxT,maxT);
   b.pitch+=clamp(tp-b.pitch,-maxT,maxT);
-  if(mode==='fight'&&a.react<=0&&Math.abs(dy)<.14&&Math.abs(tp-b.pitch)<.16&&dist<PREF[b.wep]*2.6+8)tryFire(b);
+  if(mode==='fight'&&a.react<=0&&Math.abs(dy)<.14&&Math.abs(tp-b.pitch)<.16&&dist<prefD(b)*2.6+8)tryFire(b);
 }
 
 /* ===================================================== pickups */
@@ -1305,7 +1371,7 @@ function readOpts(){
 function startMatch(){
   readOpts();if($('optMap').value!==curMap)loadMap($('optMap').value);
   const n=+$('optBots').value;
-  if(bots.length!==n)createBots(n);
+  if(botSig(n)!==S.botSig)createBots(n);
   projs.splice(0).forEach(p=>scene.remove(p.mesh));
   decals.splice(0).forEach(d=>scene.remove(d.m));
   ents.forEach(e=>{e.kills=0;e.deaths=0;e.hill=0;e.alive=false;if(e.mesh)e.mesh.visible=false;});
@@ -1407,7 +1473,7 @@ function mpBegin(m){
   const me=m.players.find(p=>p&&p.slot===MP.slot);MP.team=me?me.team:0;player.team=MP.team;
   if(m.map&&MAPS[m.map]&&m.map!==curMap)loadMap(m.map);
   S.mode=m.mode==='koth'?'koth':'ffa';if(m.hill)setHill(m.hill);MP.hk=-1;
-  createBots(m.mode==='coop'?4:0);MP.host=m.host;
+  createBots(m.mode==='coop'?4:0,1);MP.host=m.host;
   for(const id in MP.rem){scene.remove(MP.rem[id].mesh);const i=ents.indexOf(MP.rem[id]);if(i>=0)ents.splice(i,1);}MP.rem={};
   for(const p of m.players){if(!p||p.slot===MP.slot)continue;
     const e=makeEntity(p.name,false,m.mode==='tdm'?MP_COLS[p.team]:MP_COLS[p.slot%4]);e.rid=p.slot;e.team=p.team;ents.push(e);
@@ -1626,7 +1692,7 @@ function showLoadout(keep){S.screen='load';S.slotSel=S.slotSel||0;const sc=card.
   if(keep)card.scrollTop=sc;}
 card.addEventListener('click',ev=>{
   const t=ev.target.closest('[data-go],[data-tab],[data-slot],[data-acct],[data-lb],[data-mpm],button[data-act]');if(!t||t.disabled)return;initAudio();
-  if(t.dataset.go){({menu:showMenu,shop:showShop,load:showLoadout,acct:()=>showAccount('login'),out:async()=>{await signOut();showMenu();},exp:exportSave,imp:importSave,lb:()=>showLB(),mp:()=>{if(!ACCT.api)toast('Multiplayer needs the online server',1800);else if(!ACCT.name){toast('Log in to play online',1600);showAccount('login');}else showMP();}})[t.dataset.go]();return;}
+  if(t.dataset.go){({menu:showMenu,shop:showShop,load:showLoadout,acct:()=>showAccount('login'),out:async()=>{await signOut();showMenu();},exp:exportSave,imp:importSave,lb:()=>showLB(),bx:()=>showBx(),mp:()=>{if(!ACCT.api)toast('Multiplayer needs the online server',1800);else if(!ACCT.name){toast('Log in to play online',1600);showAccount('login');}else showMP();}})[t.dataset.go]();return;}
   if(t.dataset.acct){showAccount(t.dataset.acct);return;}
   if(t.dataset.lb){showLB(t.dataset.lb);return;}
   if(t.dataset.mpm){MP.mode=t.dataset.mpm;showMP();return;}
@@ -1638,6 +1704,41 @@ card.addEventListener('click',ev=>{
   else if(a==='eq')SAVE.armor=id;
   else if(a==='slot'){const j=SAVE.loadout.indexOf(id),cur=SAVE.loadout[S.slotSel];if(j>=0)SAVE.loadout[j]=cur;SAVE.loadout[S.slotSel]=id;}
   persist();S.screen==='shop'?showShop(true):showLoadout(true);});
+const BX_TPL={Balanced:{aim:5,react:5,speed:5,aggr:5,dodge:5,wep:'auto'},Sniper:{aim:9,react:6,speed:4,aggr:2,dodge:4,wep:3},Rusher:{aim:4,react:6,speed:9,aggr:10,dodge:6,wep:1},
+ Bomber:{aim:5,react:4,speed:5,aggr:3,dodge:3,wep:7},Dodger:{aim:6,react:8,speed:8,aggr:5,dodge:10,wep:0},Tank:{aim:5,react:4,speed:3,aggr:7,dodge:2,wep:'auto'}};
+const BX_SL=[['aim','Aim','accuracy + turn speed'],['react','Reflexes','how fast it reacts'],['speed','Speed','run speed'],['aggr','Aggression','charges in vs keeps distance'],['dodge','Dodging','strafing + weaving']];
+const BX_COLS=['#8a3fb5','#d6432f','#2f6ab5','#2e9b57','#e27a3c','#e0559a','#1aa3a3','#f2c14e'];
+const bxPower=c=>(c.aim+c.react+c.speed+c.aggr+c.dodge)*2;
+const bxNew=()=>Object.assign({id:'b'+Date.now().toString(36)+(Math.random()*1296|0).toString(36),name:'Boxitar '+(SAVE.boxitars.length+1),col:pick(BX_COLS),armor:'none',stk:[],on:0},BX_TPL.Balanced);
+function showBx(){S.screen='bx';S.bxEdit=null;const L=SAVE.boxitars;
+  showCard('<h1 class="small">BOX<em>ITARS</em></h1><div class="tag">Custom bots. Switch up to 4 into your next bot match, on top of the default bots.</div><div class="sum">In next match: <b>'+L.filter(b=>b.on).length+'/4</b> &middot; Saved: <b>'+L.length+'/8</b></div><div class="grid">'+(L.length?L.map(c=>'<div class="it bx"><h3><i class="sw" style="background:'+c.col+'"></i>'+c.name+'</h3><div class="sub">Threat '+bxPower(c)+'/100 &middot; '+(c.wep==='auto'?'Auto weapon':WEAPONS[c.wep].name)+'</div><div class="sub">'+BX_SL.map(s=>s[1].slice(0,3)+' '+c[s[0]]).join(' &middot; ')+'</div><div class="sub">'+ARMORS.find(a=>a.id===c.armor).name+' '+c.stk.map(i=>STICKERS.find(x=>x.id===i).emo).join('')+'</div><div class="bxb"><button class="xs'+(c.on?'':' off')+'" data-bx="tog" data-i="'+c.id+'">'+(c.on?'IN MATCH':'BENCHED')+'</button><button class="xs" data-bx="edit" data-i="'+c.id+'">EDIT</button><button class="xs" data-bx="del" data-i="'+c.id+'">DELETE</button></div></div>').join(''):'<div class="sum">No boxitars yet. Build one!</div>')+'</div><div class="btnrow"><button class="sm alt" data-bx="new"'+(L.length>=8?' disabled':'')+'>NEW BOXITAR</button><button class="sm" data-go="menu">BACK</button></div>',true);}
+function showBxEdit(){S.screen='bxe';const c=S.bxEdit,opt=(v,t,cur)=>'<option value="'+v+'"'+(String(cur)===String(v)?' selected':'')+'>'+t+'</option>';
+  const stOpts=k=>opt('','- none -',c.stk[k]||'')+SAVE.ownedS.map(id=>{const x=STICKERS.find(q=>q.id===id);return opt(id,x.emo+' '+x.name,c.stk[k]||'');}).join('');
+  showCard('<h1 class="small">'+(S.bxIsNew?'NEW':'EDIT')+' <em>BOXITAR</em></h1><div class="sum">Threat rating <b id="bxThr">'+bxPower(c)+'</b>/100</div><div class="bxe">'+
+   '<label>Name<input type="text" id="bxName" maxlength="14" value="'+c.name+'"></label><label>Color<input type="color" id="bxCol" value="'+c.col+'"></label>'+
+   '<label class="full">Start from a template<select id="bxTpl">'+opt('','- pick to load a preset -','')+Object.keys(BX_TPL).map(k=>opt(k,k,'')).join('')+'</select></label>'+
+   BX_SL.map(s=>'<label>'+s[1]+' <b id="v_'+s[0]+'">'+c[s[0]]+'</b><input type="range" min="1" max="10" value="'+c[s[0]]+'" data-sl="'+s[0]+'"><small>'+s[2]+'</small></label>').join('')+
+   '<label>Favorite weapon<select id="bxWep">'+opt('auto','Auto (smart pick by range)',c.wep)+WEAPONS.map((w,i)=>opt(i,w.name,c.wep)).join('')+'</select></label>'+
+   '<label>Armor<select id="bxArm">'+SAVE.ownedA.map(id=>opt(id,ARMORS.find(a=>a.id===id).name,c.armor)).join('')+'</select></label>'+
+   '<label>Sticker 1<select id="bxS0">'+stOpts(0)+'</select></label><label>Sticker 2<select id="bxS1">'+stOpts(1)+'</select></label></div>'+
+   '<div class="note">Boxitars can wear any armor and stickers you own. Buy more in the shop.</div><div class="btnrow"><button class="sm alt" data-bx="save">SAVE</button><button class="sm" data-bx="cancel">CANCEL</button></div>',true);}
+function bxInput(ev){const t=ev.target,c=S.bxEdit;if(S.screen!=='bxe'||!c)return;
+  if(t.dataset.sl){c[t.dataset.sl]=+t.value;$('v_'+t.dataset.sl).textContent=t.value;$('bxThr').textContent=bxPower(c);}
+  else if(t.id==='bxName')c.name=t.value;else if(t.id==='bxCol')c.col=t.value;
+  else if(t.id==='bxWep')c.wep=t.value==='auto'?'auto':+t.value;else if(t.id==='bxArm')c.armor=t.value;
+  else if(t.id==='bxS0'||t.id==='bxS1')c.stk=[$('bxS0').value,$('bxS1').value].filter((s,i,a)=>s&&a.indexOf(s)===i);
+  else if(t.id==='bxTpl'&&BX_TPL[t.value]){Object.assign(c,BX_TPL[t.value]);showBxEdit();}}
+card.addEventListener('input',bxInput);card.addEventListener('change',bxInput);
+card.addEventListener('click',ev=>{const t=ev.target.closest('[data-bx]');if(!t||t.disabled)return;initAudio();
+  const a=t.dataset.bx,L=SAVE.boxitars,i=L.findIndex(b=>b.id===t.dataset.i);
+  if(a==='new'){if(L.length>=8)return;S.bxEdit=bxNew();S.bxIsNew=1;showBxEdit();return;}
+  if(a==='edit'&&i>=0){S.bxEdit=JSON.parse(JSON.stringify(L[i]));S.bxIsNew=0;showBxEdit();return;}
+  if(a==='del'&&i>=0)L.splice(i,1);
+  else if(a==='tog'&&i>=0){if(!L[i].on&&L.filter(b=>b.on).length>=4){toast('Max 4 boxitars per match',1400);return;}L[i].on^=1;}
+  else if(a==='save'){const c=S.bxEdit;if(!c)return;c.name=BX_NAME(c.name)||'Boxitar';
+    if(S.bxIsNew){if(L.filter(b=>b.on).length<4)c.on=1;L.push(c);}else{const j=L.findIndex(b=>b.id===c.id);if(j>=0)L[j]=c;}}
+  else if(a!=='cancel')return;
+  persist();showBx();});
 bindMenu();initAccounts();
 function renderScore(){
   const r=ranking();
